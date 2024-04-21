@@ -6,6 +6,6 @@ import pro.sky.telegrambot.model.Task;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface NotificationTask extends JpaRepository<Task,Long> {
+public interface NotificationTaskRepository extends JpaRepository<Task,Long> {
     List<Task> findByDate(LocalDateTime localDateTime);
 }

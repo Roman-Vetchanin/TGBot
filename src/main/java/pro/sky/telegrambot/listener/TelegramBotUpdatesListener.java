@@ -24,13 +24,12 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final TGBotService tgBotService;
     private final TGbotMessageService messageService;
+    private final TelegramBot telegramBot;
 
-    @Autowired
-    private TelegramBot telegramBot;
-
-    public TelegramBotUpdatesListener(TGBotService tgBotService, TGbotMessageService messageService) {
+    public TelegramBotUpdatesListener(TGBotService tgBotService, TGbotMessageService messageService, TelegramBot telegramBot) {
         this.tgBotService = tgBotService;
         this.messageService = messageService;
+        this.telegramBot = telegramBot;
     }
 
     @PostConstruct
@@ -38,14 +37,13 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         telegramBot.setUpdatesListener(this);
     }
 
-
     @Override
     public int process(List<Update> updates) {
         try {
             updates.forEach(update -> {
                 logger.info("Processing update: {}", update);
                 String text = update.message().text();
-                long chatId = update.message().from().id();
+                long chatId = update.message().chat().id();
                 if ("/start".equals(text)) {
                     messageService.sendMessage(chatId, "Для записи задачи отправь ее в формате: 01.01.2020 20:00 Встреча");
                 } else if (text != null) {
